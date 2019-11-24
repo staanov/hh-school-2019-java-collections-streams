@@ -22,6 +22,11 @@ public class Task2 implements Task {
   private static List<Person> combineAndSortWithLimit(Collection<Person> persons1,
                                                       Collection<Person> persons2,
                                                       int limit) {
+    /* Алгоритм:
+    * 1. Объединить две коллекции
+    * 2. Отсортировать объединенную коллекцию по Instant createdAt
+    * 3. Возвращаем первые limit элементов коллекции
+    * */
     return new ArrayList<>();
   }
 

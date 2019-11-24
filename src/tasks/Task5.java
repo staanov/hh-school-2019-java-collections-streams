@@ -20,6 +20,11 @@ public class Task5 implements Task {
 
   // !!! Редактируйте этот метод !!!
   private List<ApiPersonDto> convert(List<Person> persons, Map<Integer, Integer> personAreaIds) {
+    /* Алгоритм:
+     * 1. Создать List<ApiPersonDto>
+     * 2. Проитерироваться по списку List<Person>, конвертируя каждый элемент в ApiPersonDto, добавляя id региона
+     * 3. Вернуть полученный List<ApiPersonDto> с правильными id региона
+     * */
     return new ArrayList<>();
   }
 

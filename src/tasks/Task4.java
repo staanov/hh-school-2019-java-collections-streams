@@ -19,6 +19,11 @@ public class Task4 implements Task {
 
   // !!! Редактируйте этот метод !!!
   private List<ApiPersonDto> convert(List<Person> persons) {
+    /* Алгоритм:
+    * 1. Создать List<ApiPersonDto>
+    * 2. Проитерироваться по списку List<Person>, конвертируя каждый элемент в ApiPersonDto
+    * 3. Вернуть полученный List<ApiPersonDto>
+    * */
     return new ArrayList<>();
   }
 

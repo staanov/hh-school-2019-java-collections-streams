@@ -14,6 +14,11 @@ import java.util.Set;
 public class Task7 implements Task {
 
   private Set<String> vacancyNames(Collection<Company> companies) {
+    /* Алгоритм:
+    * 1. Создать Set для хранения вакансий
+    * 2. Проитерироваться по коллекции, добавляя в Set название вакансии
+    * 3. Вернуть полученный Set
+    * */
     return new HashSet<>();
   }
 

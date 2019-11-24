@@ -16,6 +16,12 @@ public class Task3 implements Task {
 
   // !!! Редактируйте этот метод !!!
   private List<Person> sort(Collection<Person> persons) {
+    /* Алгоритм:
+    * 1. Отсортировать по фамилии
+    * 2. Отсортировать по имени
+    * 3. Отсортировать по дате создания
+    * 4. Вернуть отсортированный список
+    * */
     return new ArrayList<>(persons);
   }
 

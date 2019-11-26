@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /*
 Имеются
@@ -23,7 +24,19 @@ public class Task6 implements Task {
   private Set<String> getPersonDescriptions(Collection<Person> persons,
                                             Map<Integer, Set<Integer>> personAreaIds,
                                             Collection<Area> areas) {
-    return new HashSet<>();
+    Set<String> personAreas = new HashSet<>();
+    Set<Integer> areasSet;
+    for (Person person : persons) {
+      if (personAreaIds.containsKey(person.getId())) {
+        areasSet = personAreaIds.get(person.getId());
+        for (Area area : areas) {
+          if (areasSet.contains(area.getId())) {
+            personAreas.add(person.getFirstName() + " - " + area.getName());
+          }
+        }
+      }
+    }
+    return personAreas;
   }
 
   @Override

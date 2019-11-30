@@ -5,11 +5,7 @@ import common.Person;
 import common.Task;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,15 +22,14 @@ public class Task6 implements Task {
                                             Map<Integer, Set<Integer>> personAreaIds,
                                             Collection<Area> areas) {
     Set<String> personAreas = new HashSet<>();
-    Set<Integer> areasSet;
+    Map<Integer, String> areasIds = new HashMap<>();
+    for (Area area : areas) {
+      areasIds.put(area.getId(), area.getName());
+    }
     for (Person person : persons) {
-      if (personAreaIds.containsKey(person.getId())) {
-        areasSet = personAreaIds.get(person.getId());
-        for (Area area : areas) {
-          if (areasSet.contains(area.getId())) {
-            personAreas.add(person.getFirstName() + " - " + area.getName());
-          }
-        }
+      Set<Integer> areasSet = personAreaIds.get(person.getId());
+      for (Integer areaId : areasSet) {
+        personAreas.add(person.getFirstName() + " - " + areasIds.get(areaId));
       }
     }
     return personAreas;

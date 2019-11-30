@@ -18,20 +18,15 @@ P.P.S Здесь ваши правки желательно прокоммент
  */
 public class Task8 implements Task {
 
-    private long count;
-
     //Не хотим выдывать апи нашу фальшивую персону, поэтому конвертим начиная со второй
     public List<String> getNames(List<Person> persons) {
         /*
-        * staanov: Мне не понравилась отдельная проверка на null (пустая ли коллекция или с элементами)
-        * Можно воспользоваться метолом isEmpty и загнать все действия в одну-единственную структуру if-else
+        * staanov: Вместо remove() можно прямо в стриме скипнуть 1ый элемент (фальшивую персону)
         * */
-        if (persons.isEmpty()) {
+        if (persons.size() == 0) {
             return Collections.emptyList();
-        } else {
-            persons.remove(0);
-            return persons.stream().map(Person::getFirstName).collect(Collectors.toList());
         }
+        return persons.stream().skip(1).map(Person::getFirstName).collect(Collectors.toList());
     }
 
     //ну и различные имена тоже хочется
@@ -73,9 +68,12 @@ public class Task8 implements Task {
     public Map<Integer, String> getPersonNames(Collection<Person> persons) {
         /*
         * staanov: Заметил цикл for и создание отдельной переменной на стрим
-        * distinct нужен как замена проверки условия if (!map.containsKey(person.getId()))
+        * merge-function в toMap() как замена проверки условия if (!map.containsKey(person.getId()))
         * */
-        return persons.stream().distinct().collect(Collectors.toMap(Person::getId, this::convertPersonToString));
+        return persons.stream()
+                .collect(Collectors.toMap(Person::getId,
+                        this::convertPersonToString,
+                        (existing, replacement) -> existing));
     }
 
     // есть ли совпадающие в двух коллекциях персоны?
@@ -83,14 +81,10 @@ public class Task8 implements Task {
         boolean has = false;
         /*
         * staanov: Было 2 вложенных цикла for
-        * стал 1 цикл for и метод contains
-        * по условию при первом нахождении совпадения цикл завершает свою работы.
+        * стал 1 цикл for и метод anyMatch() в стриме.
         * */
         for (Person person1 : persons1) {
-            if (persons2.contains(person1)) {
-                has = true;
-                break;
-            }
+            has = persons2.stream().anyMatch(person2 -> person2.equals(person1));
         }
         return has;
     }
@@ -99,6 +93,14 @@ public class Task8 implements Task {
     public long countEven(Stream<Integer> numbers) {
         /*
         * staanov: Избавился от переменной count путем вызова у фильтрованного стрима метода count()
+        * ПОЯСНЕНИЕ (чем было плохо использование переменной count):
+        * Переменная count изначально была переменной всего класса, а не метода
+        * но при этом использовалась только в countEven()
+        * поэтому мы избавляемся от неё как от переменной класса.
+        * Дальше, почему лучше избавиться и от локальной переменной count:
+        * 1. отсутствие отдельной переменной для count гарантирует, что в эту переменную никто не залезет и не изменит значение в неё
+        * 2. как я понял, считается хорошей практикой, когда метод, которому надо что-то вернуть, сам создает
+        * этот объект (или примитив как в данном случае)
         * */
         return numbers.filter(num -> num % 2 == 0).count();
     }

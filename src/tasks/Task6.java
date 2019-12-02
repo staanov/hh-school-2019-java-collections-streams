@@ -22,14 +22,10 @@ public class Task6 implements Task {
                                             Map<Integer, Set<Integer>> personAreaIds,
                                             Collection<Area> areas) {
     Set<String> personAreas = new HashSet<>();
-    Map<Integer, String> areasIds = new HashMap<>();
-    for (Area area : areas) {
-      areasIds.put(area.getId(), area.getName());
-    }
+    Map<Integer, String> areasNames = areas.stream().collect(Collectors.toMap(Area::getId, Area::getName));
     for (Person person : persons) {
-      Set<Integer> areasSet = personAreaIds.get(person.getId());
-      for (Integer areaId : areasSet) {
-        personAreas.add(person.getFirstName() + " - " + areasIds.get(areaId));
+      for (Integer areaId : personAreaIds.get(person.getId())) {
+        personAreas.add(person.getFirstName() + " - " + areasNames.get(areaId));
       }
     }
     return personAreas;

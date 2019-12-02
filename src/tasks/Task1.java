@@ -24,16 +24,22 @@ public class Task1 implements Task {
      * HashMap нужен для того, чтобы можно было по id извлекать элементы Person из коллекции
      * */
     private List<Person> findOrderedPersons(List<Integer> personIds) {
-        Set<Person> persons = PersonService.findPersons(personIds);
-        Map<Integer, Person> personMap = new HashMap<>();
+        Map<Integer, Person> personMap = new LinkedHashMap<>();
+        for (Person person : PersonService.findPersons(personIds)) {
+            personMap.put(person.getId(), person);
+        }
+        return personMap.values().stream()
+                .sorted(Comparator.comparing(Person::getId)) // <- вместо Person::getId написать нужный Comparator
+                .collect(Collectors.toList());
+        /*Map<Integer, Person> personMap = new HashMap<>();
         List<Person> sortedPersons = new ArrayList<>();
-        for (Person person : persons) {
+        for (Person person : PersonService.findPersons(personIds)) {
             personMap.put(person.getId(), person);
         }
         for (Integer id : personIds) {
             sortedPersons.add(personMap.get(id));
         }
-        return sortedPersons;
+        return sortedPersons;*/
     }
 
     @Override

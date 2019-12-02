@@ -22,10 +22,8 @@ public class Task8 implements Task {
     public List<String> getNames(List<Person> persons) {
         /*
         * staanov: Вместо remove() можно прямо в стриме скипнуть 1ый элемент (фальшивую персону)
+        * P.S. Да, if не нужен, стрим из пустой коллекции в конце вернет пустую коллекцию...
         * */
-        if (persons.size() == 0) {
-            return Collections.emptyList();
-        }
         return persons.stream().skip(1).map(Person::getFirstName).collect(Collectors.toList());
     }
 
@@ -43,25 +41,11 @@ public class Task8 implements Task {
     //Для фронтов выдадим полное имя, а то сами не могут
     public String convertPersonToString(Person person) {
         /*
-        * staanov: Поскольку проверки на null я вынес в отдельный метод nameNullChecking()
-        * то можно в одной строке return и создать, и вернуть строку result
+        * staanov: Занес все данные персоны в стрим, отфильтровал на отсутствие какого-либо из имен и собрал их в строку
         * */
-        return nameNullChecking(person.getSecondName())
-                + nameNullChecking(person.getFirstName())
-                + nameNullChecking(person.getMiddleName());
-    }
-
-    /*
-    * staanov: Метод проверки любого имени (first, second, middle) на null и возврата имени (если оно не null)
-    * во избежание дублирования кода в методе convertPersonToString
-    * private поскольку им должен пользоваться только метод convertToString, извне вызов метода nameNullChecking не нужен
-    * */
-    private String nameNullChecking(String name) {
-        if (name != null) {
-            return " " + name;
-        } else {
-            return "";
-        }
+        return Stream.of(person.getSecondName(), person.getFirstName(), person.getMiddleName())
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" "));
     }
 
     // словарь id персоны -> ее имя

@@ -24,8 +24,10 @@ public class Task6 implements Task {
     Set<String> personAreas = new HashSet<>();
     Map<Integer, String> areasNames = areas.stream().collect(Collectors.toMap(Area::getId, Area::getName));
     for (Person person : persons) {
-      for (Integer areaId : personAreaIds.get(person.getId())) {
-        personAreas.add(person.getFirstName() + " - " + areasNames.get(areaId));
+      if (personAreaIds.containsKey(person.getId())) {
+        for (Integer areaId : personAreaIds.get(person.getId())) {
+          personAreas.add(person.getFirstName() + " - " + areasNames.get(areaId));
+        }
       }
     }
     return personAreas;
@@ -35,7 +37,8 @@ public class Task6 implements Task {
   public boolean check() {
     List<Person> persons = List.of(
         new Person(1, "Oleg", Instant.now()),
-        new Person(2, "Vasya", Instant.now())
+        new Person(2, "Vasya", Instant.now()),
+        new Person(3, "Roman", Instant.now())
     );
     Map<Integer, Set<Integer>> personAreaIds = Map.of(1, Set.of(1, 2), 2, Set.of(2, 3));
     List<Area> areas = List.of(new Area(1, "Moscow"), new Area(2, "Spb"), new Area(3, "Ivanovo"));

@@ -64,11 +64,17 @@ public class Task8 implements Task {
     public boolean hasSamePersons(Collection<Person> persons1, Collection<Person> persons2) {
         boolean has = false;
         /*
-        * staanov: Было 2 вложенных цикла for
-        * стал 1 цикл for и метод anyMatch() в стриме.
+        * staanov: Было: 2 вложенных цикла for
+        * Стало: превратил одну из коллекций в HashSet, по другой итерировался
+        * и при нахождении первого вхождения меняем has = true и выходим из цикла
+        * Сложность: O(n)
         * */
-        for (Person person1 : persons1) {
-            has = persons2.stream().anyMatch(person2 -> person2.equals(person1));
+        Set<Person> personSet1 = new HashSet<>(persons1);
+        for (Person person2 : persons2) {
+            if (personSet1.contains(person2)) {
+                has = true;
+                break;
+            }
         }
         return has;
     }
